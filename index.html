@@ -1,15 +1,11 @@
 <!DOCTYPE html>
 
 <html>
-    
-    
-<head></head>
 
 <body onload="execDaumPostcode()">
 <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/>
 
-<div id = "wrap" style = "display:block; margin:5px 0; position:relative; height: auto; overflow:hidden; z-index:1; -webkit-overflow-scrolling:touch;">
-  
+<div id = "wrap" style = "position:relative; z-index:1; -webkit-overflow-scrolling:touch;">
 </div>
 
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -22,20 +18,21 @@
   function execDaumPostcode() {
     // 현재 scroll 위치를 저장해놓는다.
     var currentScroll = Math.max(document.body.scrollTop, document.documentElement.scrollTop);
+    
     new daum.Postcode({
       oncomplete: function(data) {
+        document.body.scrollTop = currentScroll;
+        window.webkit.messageHandlers.amondz.postMessage(data);
       },
       // 우편번호 찾기 화면 크기가 조정되었을때 실행할 코드를 작성하는 부분. iframe을 넣은 element의 높이값을 조정한다.
       onresize : function(size) {
-            
           console.log(size)
-          element_wrap.style.height = size.height+'px';
+          element_wrap.style.width = size.width+'px';
+	        element_wrap.style.height = size.height+'px';
       },
       width : '100%',
-      height : '100%'
+      height : '110%'
     }).embed(element_wrap);
-    // iframe을 넣은 element를 보이게 한다.
-    element_wrap.style.display = 'block';
   }
   
 </script>
